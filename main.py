@@ -64,7 +64,6 @@ def get_gemini_response(question, history, request: gr.Request):
     for doc in docs:
         docs_input_parts.append(f"[source: {doc.metadata["title"]}; page: {doc.metadata["page_label"]}]\n{doc.page_content}")
     full_question = f"User question:\n{question}\n\n\nRetrieved context:\n{"\n\n".join(docs_input_parts)}"
-    print(full_question)
     chats[chat_id].append(types.Content(role = "user", parts = [types.Part(text=full_question)]))
     response_stream = client.models.generate_content_stream(
         model = model,
