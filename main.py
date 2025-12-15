@@ -3,6 +3,7 @@ from google.genai import types
 import gradio as gr
 
 client = genai.Client()
+chats = {}
 
 model = "gemini-2.5-flash"
 config=types.GenerateContentConfig(
@@ -32,28 +33,24 @@ config=types.GenerateContentConfig(
     )
 
 def get_gemini_response(question, history, request: gr.Request):
-    print(request.session_hash)
-    gemini_history = []
-    for message in history:
-        gemini_role = "user" if message["role"] == "user" else "model"
-        gemini_parts = []
-        for part in message["content"]:
-            if ("type" not in part) or part['type'] != "text":
-                continue
-            gemini_parts.append(types.Part(text=part["text"]))
-        gemini_history.append(types.Content(role = gemini_role, parts = gemini_parts))
+    chat_id = request.session_hash
+    if chat_id not in chats:
+        chats[chat_id] = []
 
-    gemini_history.append(types.Content(role = "user", parts = [types.Part(text=question)]))
+    chats[chat_id].append(types.Content(role = "user", parts = [types.Part(text=question)]))
     response_stream = client.models.generate_content_stream(
         model = model,
         config = config,
-        contents = gemini_history
+        contents = chats[chat_id]
     )
     partial_text = ""
     for chunk in response_stream:
         if chunk.text:
             partial_text += chunk.text
             yield partial_text
+
+    gemini_parts = [types.Part(text=partial_text)]
+    chats[chat_id].append(types.Content(role = "model", parts = gemini_parts))
 
 gr.ChatInterface(
     get_gemini_response,
