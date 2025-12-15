@@ -2,14 +2,11 @@ from google import genai
 from google.genai import types
 import gradio as gr
 
-import os
-
 import db_setup
 
 client = genai.Client()
 chats = {}
 
-cwd = os.getcwd()
 
 model = "gemini-2.5-flash"
 config=types.GenerateContentConfig(
