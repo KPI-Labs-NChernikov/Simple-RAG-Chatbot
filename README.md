@@ -16,14 +16,20 @@ cp /full/path/to/aws-docs1.pdf ./data/
 **2. Install Dependencies**
 
 ```bash
-pip install google-genai gradio
+pip install google-genai gradio langchain-chroma langchain-openai langchain-community pypdf langchain-text-splitters
 ```
 
-**3. Set API Key**
+**3. Set Gemini API Key**
 You need a [Google AI Studio](https://aistudio.google.com/) key.
 
-  * **Mac/Linux:** `export GEMINI_API_KEY="your_api_key"`
-  * **Windows:** `$env:GEMINI_API_KEY="your_api_key"`
+  * **Mac/Linux:** `export GEMINI_API_KEY="your_gemini_api_key"`
+  * **Windows:** `$env:GEMINI_API_KEY="your_gemini_api_key"`
+
+**4. Set OpenAI API Key (for embeddings)**
+You need a [OpenAI Platform](https://platform.openai.com/api-keys/) key.
+
+  * **Mac/Linux:** `export OPENAI_API_KEY="your_openai_api_key"`
+  * **Windows:** `$env:OPENAI_API_KEY="your_openai_api_key"`
 
 **5. Run db_uploader**
 and wait until it completes ChromaDB setup.
@@ -31,7 +37,7 @@ and wait until it completes ChromaDB setup.
 python db_uploader.py
 ```
 
-**5. Run the App**
+**6. Run the App**
 
 ```bash
 python main.py
@@ -49,3 +55,4 @@ Open the URL displayed in your terminal (usually `http://127.0.0.1:7860`).
 
   * Python 3.9+
   * Google Gen AI SDK
+  * OpenAI Embeddings
