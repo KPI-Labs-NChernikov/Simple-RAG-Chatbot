@@ -49,7 +49,7 @@ for file in listdir(files_directory):
     for text in texts:
         text.metadata["source"] = file
         text.metadata = trim_keywords(text.metadata)
-        ids.append(f"{file}-page{text.metadata["page"] + 1}-{chunk_id}")
+        ids.append(f"{file}-page{text.metadata["page"] + 1}-chunk{chunk_id}")
         documents.append(text)
 
         chunk_id += 1
