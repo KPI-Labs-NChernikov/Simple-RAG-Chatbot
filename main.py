@@ -72,7 +72,9 @@ retriever = vector_store.as_retriever(search_type="similarity_score_threshold",
 
 def get_gemini_response(question, history, request: gr.Request):
     chat_id = request.session_hash
-    if chat_id not in chats:
+    chat_is_not_created = chat_id not in chats
+    chat_was_cleared = chat_id in chats and len(history) == 0 and len(chats[chat_id]) != 0
+    if chat_is_not_created or chat_was_cleared:
         chats[chat_id] = []
 
     docs = retriever.invoke(question)
